@@ -5,6 +5,7 @@
 <table>
   <thead>
     <tr>
+      <th>User</th>
       <th>Content</th>
       <th>Image</th>
       <th colspan="3"></th>
@@ -14,9 +15,9 @@
   <tbody>
     <% @pictures.each do |picture| %>
       <tr>
-        <%= picture.user.name%>
+        <td><%= picture.user.name %></td>
         <td><%= picture.content %></td>
-        <td><%= picture.image %></td>
+        <td><%= image_tag picture.image.url, size:'200x200' if picture.image.present? %></td>
         <td><%= link_to '詳細', picture %></td>
         <td><%= link_to '編集', edit_picture_path(picture) %></td>
         <td><%= link_to '削除', picture, method: :delete, data: { confirm: '本当に削除していいですか？' } %></td>

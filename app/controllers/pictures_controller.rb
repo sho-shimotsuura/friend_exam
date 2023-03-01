@@ -2,7 +2,7 @@ class PicturesController < ApplicationController
   before_action :set_picture, only: %i[ show edit update destroy ]
 
   def index
-    @pictures = Picture.all.order(created_at: :desc)
+    @pictures = Picture.all
   end
 
   def new
@@ -11,18 +11,15 @@ class PicturesController < ApplicationController
 
   def create
     @picture = current_user.pictures.build(picture_params)
-    respond_to do |format|
-      if @picture.save
-        format.html { redirect_to picture_url(@picture), notice: "画像を投稿しました" }
-        format.json { render :show, status: :created, location: @picture }
-      else
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @picture.errors, status: :unprocessable_entity }
-      end
+    if @picture.save
+      redirect_to pictures_path, notice: "投稿しました"
+    else
+      render :new, notice: "投稿できませんでした"
     end
   end
 
   def show
+    @picture = Picture.find(params[:id])
   end
 
 
@@ -52,16 +49,17 @@ class PicturesController < ApplicationController
   end
 
   def confirm
-    @picture = current_user.pictures.build(blog_params)
+    @picture = current_user.pictures.build(picture_params)
     render :new if @picture.invalid?
   end
 
   private
-    def set_picture
-      @picture = Picture.find(params[:id])
-    end
 
-    def picture_params
+  def set_picture
+      @picture = Picture.find(params[:id])
+  end
+
+  def picture_params
       params.require(:picture).permit(:content, :image, :image_cache)
-    end
+  end
 end
