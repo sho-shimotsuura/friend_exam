@@ -7,7 +7,7 @@
 
 <p>
   <strong>Image:</strong>
-  <%= image_tag @picture.image.url %>
+  <%= image_tag @picture.image.url, size:'400x400' %>
 </p>
 
 <%= link_to '編集', edit_picture_path(@picture) %> |
